@@ -84,8 +84,9 @@ class Trie:
 
         for c, child in node.items():
             d = tab[i - 1][len(query)]
-            if c == "\0" and d <= k:
-                yield sofar, d
+            if c == "\0":
+                if d <= k:
+                    yield sofar, d
                 continue
 
             new = sofar + c
@@ -130,10 +131,12 @@ class FBTrie:
 
         # k1 = (k - 1) // 2 + 1
         k1 = (k - 1) // 2
+        print("F", k1)
         yield from self.trie_fuzzy(self.f, k1, k, q1, query)
 
         # k2 = k // 2 + 1
         k2 = k // 2
+        print("B", k2)
         yield from ((word[::-1], d) for word, d
                     in self.trie_fuzzy(self.b, k2, k, q2[::-1], query[::-1]))
 
@@ -152,8 +155,9 @@ class FBTrie:
 
         for c, child in sorted(node.items(), key=lambda x: x[0]):
             d = tab[i - 1][len(query)]
-            if c == "\0" and d <= k:
-                yield sofar, d
+            if c == "\0":
+                if d <= k:
+                    yield sofar, d
                 continue
 
             new = sofar + c
